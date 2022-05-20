@@ -19,6 +19,7 @@ public class NotesTakerActivity extends AppCompatActivity {
 EditText editText_titles, editText_notes;
 ImageView imageView_save;
 Notes notes;
+boolean isOldNote = false;
 
 
     @Override
@@ -29,6 +30,16 @@ Notes notes;
 
         editText_titles=findViewById(R.id.edit_titles);
         editText_notes=findViewById(R.id.edit_notes);
+
+        notes = new Notes();
+        try {
+            notes= (Notes) getIntent().getSerializableExtra("old_name");
+            editText_titles.setText(notes.getTitle());
+            editText_notes.setText(notes.getNotes());
+            isOldNote = true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         imageView_save=findViewById(R.id.img_save);
         imageView_save.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +54,10 @@ Notes notes;
                 }
                 SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MM yyy HH:mm a");
                 Date date = new Date();
+
+                if (!isOldNote){
+                    notes = new Notes();
+                }
 
                 notes = new Notes();
                 notes.setTitle(title);
